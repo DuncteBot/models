@@ -23,12 +23,22 @@
  *
  */
 
+import com.jfrog.bintray.gradle.BintrayExtension
+import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
+import java.util.*
+
 plugins {
+    idea
     java
+    `java-library`
+    `maven-publish`
+
+    id("com.jfrog.bintray") version "1.8.4"
 }
 
-group = "com.dunctebot"
-version = "1.0-SNAPSHOT"
+group = "com.duncebot"
+version = "1.0.${getBuildNum()}"
+val archivesBaseName = "dunctebot-models"
 
 repositories {
     jcenter()
@@ -40,3 +50,79 @@ dependencies {
     implementation(group = "com.google.code.findbugs", name = "jsr305", version = "3.0.2")
 
 }
+
+fun getBuildNum(): String {
+    return System.getenv("GITHUB_RUN_NUMBER") ?: "dev"
+}
+
+val bintrayUpload: BintrayUploadTask by tasks
+val compileJava: JavaCompile by tasks
+val javadoc: Javadoc by tasks
+val jar: Jar by tasks
+val build: Task by tasks
+val clean: Task by tasks
+val test: Task by tasks
+val check: Task by tasks
+
+val sourcesJar = task<Jar>("sourcesJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets["main"].allJava)
+}
+
+val javadocJar = task<Jar>("javadocJar") {
+    dependsOn(javadoc)
+    archiveClassifier.set("javadoc")
+    from(javadoc.destinationDir)
+}
+
+publishing {
+    publications {
+        register("BintrayUpload", MavenPublication::class) {
+            from(components["java"])
+
+            artifactId = archivesBaseName
+            groupId = project.group as String
+            version = project.version as String
+
+            artifact(javadocJar)
+            artifact(sourcesJar)
+        }
+    }
+}
+
+bintray {
+    user = System.getenv("BINTRAY_USER")
+    key = System.getenv("BINTRAY_KEY")
+    setPublications("BintrayUpload")
+    pkg(delegateClosureOf<BintrayExtension.PackageConfig> {
+        repo = "maven"
+        name = "dunctebot-models"
+        setLicenses("MIT")
+        vcsUrl = "https://github.com/DuncteBot/models.git"
+        publish = true
+        version(delegateClosureOf<BintrayExtension.VersionConfig>  {
+            name = project.version as String
+            released = Date().toString()
+        })
+    })
+}
+
+build.apply {
+    dependsOn(jar)
+    dependsOn(javadocJar)
+    dependsOn(sourcesJar)
+
+    jar.mustRunAfter(clean)
+    javadocJar.mustRunAfter(jar)
+    sourcesJar.mustRunAfter(javadocJar)
+}
+
+bintrayUpload.apply {
+    dependsOn(clean)
+    dependsOn(build)
+    build.mustRunAfter(clean)
+
+    onlyIf { System.getenv("BINTRAY_USER") != null }
+    onlyIf { System.getenv("BINTRAY_KEY") != null }
+}
+
