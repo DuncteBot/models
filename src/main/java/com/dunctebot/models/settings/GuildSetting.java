@@ -434,6 +434,17 @@ public class GuildSetting {
     }
 
     @JsonIgnore
+    public int getEmbedColor() {
+        return embedColor;
+    }
+
+    @JsonIgnore
+    public GuildSetting setEmbedColor(int embedColor) {
+        this.embedColor = embedColor;
+        return this;
+    }
+
+    @JsonIgnore
     public Object call(String methodName) {
         try {
             return this.getClass().getDeclaredMethod(methodName).invoke(this);
