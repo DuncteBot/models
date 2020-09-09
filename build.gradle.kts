@@ -36,8 +36,8 @@ plugins {
     id("com.jfrog.bintray") version "1.8.4"
 }
 
-group = "com.duncebot"
-version = "1.0.${getBuildNum()}"
+group = "com.dunctebot"
+version = "0.0.${getBuildNum()}"
 val archivesBaseName = "dunctebot-models"
 
 repositories {
