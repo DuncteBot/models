@@ -512,4 +512,11 @@ public class GuildSetting {
 
         return this;
     }
+
+    @JsonProperty("embed_setting")
+    public JsonNode getEmbedSetting() {
+        return new ObjectMapper()
+            .createObjectNode()
+            .put("embed_color", this.embedColor);
+    }
 }
