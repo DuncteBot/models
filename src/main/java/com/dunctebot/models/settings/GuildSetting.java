@@ -27,6 +27,7 @@ package com.dunctebot.models.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +42,7 @@ import java.util.List;
 import static com.dunctebot.models.utils.Utils.convertJ2S;
 import static com.dunctebot.models.utils.Utils.ratelimmitChecks;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GuildSetting {
     public static String DEFAULT_PREFIX = "db!";
     public static final String[] LOGGING_TYPES = {"Ban", "Unban", "Mute", "Kick", "Warn"};
