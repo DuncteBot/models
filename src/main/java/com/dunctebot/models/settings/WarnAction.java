@@ -26,10 +26,12 @@
 package com.dunctebot.models.settings;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.Nonnull;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WarnAction {
     public static final int PATRON_MAX_ACTIONS = 3;
 
