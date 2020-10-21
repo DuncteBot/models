@@ -114,7 +114,7 @@ public class GuildSetting {
     }
 
     @JsonProperty("enableLeaveMessage")
-    public boolean enableLeaveMessage() {
+    public boolean isEnableLeaveMessage() {
         return this.enableLeaveMessage;
     }
 
