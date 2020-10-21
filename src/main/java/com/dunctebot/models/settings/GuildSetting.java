@@ -52,6 +52,8 @@ public class GuildSetting {
     private String prefix = DEFAULT_PREFIX;
     private long autoRole = 0L;
     private boolean enableJoinMessage = false;
+    // TODO
+    private boolean enableLeaveMessage = false;
     private boolean enableSwearFilter = false;
     private boolean autoDeHoist = false;
     private boolean filterInvites = false;
@@ -86,6 +88,9 @@ public class GuildSetting {
 
     private int embedColor = 0x0751c6;
 
+    private int youngAccountThreshold = -1;
+    private boolean youngAccountBanEnabled = false;
+
     @JsonCreator
     public GuildSetting(@JsonProperty("guildId") long guildId) {
         this.guildId = guildId;
@@ -105,6 +110,17 @@ public class GuildSetting {
     @JsonProperty("enableJoinMessage")
     public GuildSetting setEnableJoinMessage(boolean enableJoinMessage) {
         this.enableJoinMessage = enableJoinMessage;
+        return this;
+    }
+
+    @JsonProperty("enableLeaveMessage")
+    public boolean enableLeaveMessage() {
+        return this.enableLeaveMessage;
+    }
+
+    @JsonProperty("enableLeaveMessage")
+    public GuildSetting setEnableLeaveMessage(boolean enableLeaveMessage) {
+        this.enableLeaveMessage = enableLeaveMessage;
         return this;
     }
 
@@ -443,6 +459,28 @@ public class GuildSetting {
     @JsonIgnore
     public GuildSetting setEmbedColor(int embedColor) {
         this.embedColor = embedColor;
+        return this;
+    }
+
+    @JsonProperty("young_account_threshold")
+    public int getYoungAccountThreshold() {
+        return this.youngAccountThreshold;
+    }
+
+    @JsonProperty("young_account_threshold")
+    public GuildSetting setYoungAccountThreshold(int days) {
+        this.youngAccountThreshold = days;
+        return this;
+    }
+
+    @JsonProperty("young_account_ban_enabled")
+    public boolean isYoungAccountBanEnabled() {
+        return this.youngAccountBanEnabled;
+    }
+
+    @JsonProperty("young_account_ban_enabled")
+    public GuildSetting setYoungAccountBanEnabled(boolean enabled) {
+        this.youngAccountBanEnabled = enabled;
         return this;
     }
 
