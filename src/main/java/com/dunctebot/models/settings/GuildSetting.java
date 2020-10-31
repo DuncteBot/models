@@ -91,6 +91,7 @@ public class GuildSetting {
     private int youngAccountThreshold = -1;
     private boolean youngAccountBanEnabled = false;
     private boolean inviteLoggingEnabled = false;
+    private boolean messageLoggingEnabled = false;
 
     @JsonCreator
     public GuildSetting(@JsonProperty("guildId") long guildId) {
@@ -494,6 +495,17 @@ public class GuildSetting {
     public GuildSetting setInviteLoggingEnabled(boolean enabled) {
         this.inviteLoggingEnabled = enabled;
 
+        return this;
+    }
+
+    @JsonProperty("message_logging")
+    public boolean isMessageLoggingEnabled() {
+        return this.messageLoggingEnabled;
+    }
+
+    @JsonProperty("message_logging")
+    public GuildSetting setMessageLoggingEnabled(boolean enabled) {
+        this.messageLoggingEnabled = enabled;
         return this;
     }
 
