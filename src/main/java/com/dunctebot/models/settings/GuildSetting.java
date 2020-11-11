@@ -45,7 +45,7 @@ import static com.dunctebot.models.utils.Utils.ratelimmitChecks;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GuildSetting {
     public static String DEFAULT_PREFIX = "db!";
-    public static final String[] LOGGING_TYPES = {"Ban", "Unban", "Mute", "Kick", "Warn"};
+    public static final String[] LOGGING_TYPES = {"Invite", "Ban", "Unban", "Mute", "Kick", "Warn"};
 
     private final long guildId;
     private List<String> blacklistedWords = new ArrayList<>();
@@ -487,12 +487,12 @@ public class GuildSetting {
     }
 
     @JsonProperty("invite_logging")
-    public boolean isInviteLoggingEnabled() {
+    public boolean isInviteLogging() {
         return this.inviteLoggingEnabled;
     }
 
     @JsonProperty("invite_logging")
-    public GuildSetting setInviteLoggingEnabled(boolean enabled) {
+    public GuildSetting setInviteLogging(boolean enabled) {
         this.inviteLoggingEnabled = enabled;
 
         return this;
