@@ -23,25 +23,22 @@
  *
  */
 
-import com.jfrog.bintray.gradle.BintrayExtension
-import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
-import java.util.*
-
 plugins {
     idea
     java
     `java-library`
     `maven-publish`
 
-    id("com.jfrog.bintray") version "1.8.4"
+    id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 
 group = "com.dunctebot"
-version = "0.0.${getBuildNum()}"
+version = "0.1.${getBuildNum()}"
 val archivesBaseName = "dunctebot-models"
 
 repositories {
-    jcenter()
+    mavenCentral()
+    jcenter() // Legacy :(
 }
 
 dependencies {
@@ -55,7 +52,6 @@ fun getBuildNum(): String {
     return System.getenv("GITHUB_RUN_NUMBER") ?: "dev"
 }
 
-val bintrayUpload: BintrayUploadTask by tasks
 val compileJava: JavaCompile by tasks
 val javadoc: Javadoc by tasks
 val jar: Jar by tasks
@@ -77,7 +73,31 @@ val javadocJar = task<Jar>("javadocJar") {
 
 publishing {
     publications {
-        register("BintrayUpload", MavenPublication::class) {
+        create<MavenPublication>("mavenJava") {
+            pom {
+                name.set(archivesBaseName)
+                description.set("A helper package for shared models")
+                url.set("https://github.com/DuncteBot/models")
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("duncte123")
+                        name.set("Duncan Sterken")
+                        email.set("contact@duncte123.me")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/DuncteBot/models.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:DuncteBot/models.git")
+                    url.set("https://github.com/DuncteBot/models")
+                }
+            }
+
             from(components["java"])
 
             artifactId = archivesBaseName
@@ -90,21 +110,14 @@ publishing {
     }
 }
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-    setPublications("BintrayUpload")
-    pkg(delegateClosureOf<BintrayExtension.PackageConfig> {
-        repo = "maven"
-        name = "dunctebot-models"
-        setLicenses("MIT")
-        vcsUrl = "https://github.com/DuncteBot/models.git"
-        publish = true
-        version(delegateClosureOf<BintrayExtension.VersionConfig>  {
-            name = project.version as String
-            released = Date().toString()
-        })
-    })
+githubRelease {
+    token(System.getenv("GITHUB_TOKEN"))
+    owner("DuncteBot")
+    repo("models")
+    tagName(project.version as String)
+    overwrite(false)
+    prerelease(false)
+    body(changelog())
 }
 
 build.apply {
@@ -116,13 +129,3 @@ build.apply {
     javadocJar.mustRunAfter(jar)
     sourcesJar.mustRunAfter(javadocJar)
 }
-
-bintrayUpload.apply {
-    dependsOn(clean)
-    dependsOn(build)
-    build.mustRunAfter(clean)
-
-    onlyIf { System.getenv("BINTRAY_USER") != null }
-    onlyIf { System.getenv("BINTRAY_KEY") != null }
-}
-

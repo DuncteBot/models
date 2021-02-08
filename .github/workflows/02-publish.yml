@@ -21,9 +21,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew build
-      - name: Upload to Bintray
-        run: ./gradlew bintrayUpload
+        run: ./gradlew --no-daemon build
+      - name: Upload to github
         env:
-          BINTRAY_USER: duncte123
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew --no-daemon githubRelease
