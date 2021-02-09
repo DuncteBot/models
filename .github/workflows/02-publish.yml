@@ -25,7 +25,9 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew --no-daemon build
-      - name: Upload to github
+      - name: publish release
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew --no-daemon githubRelease
+            JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+            JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+        run: ./gradlew --no-daemon githubRelease publish

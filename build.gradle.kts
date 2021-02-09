@@ -56,6 +56,7 @@ val compileJava: JavaCompile by tasks
 val javadoc: Javadoc by tasks
 val jar: Jar by tasks
 val build: Task by tasks
+val publish: Task by tasks
 val clean: Task by tasks
 val test: Task by tasks
 val check: Task by tasks
@@ -72,8 +73,18 @@ val javadocJar = task<Jar>("javadocJar") {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "jfrog"
+            url = uri("https://duncte123.jfrog.io/artifactory/maven/")
+            credentials {
+                username = System.getenv("JFROG_USERNAME")
+                password = System.getenv("JFROG_TOKEN")
+            }
+        }
+    }
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("jfrog") {
             pom {
                 name.set(archivesBaseName)
                 description.set("A helper package for shared models")
