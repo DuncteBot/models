@@ -78,6 +78,8 @@ public class GuildSetting {
     private boolean muteLogging = true;
     private boolean kickLogging = true;
     private boolean warnLogging = true;
+    // new feature: disable by default
+    private boolean memberLogging = false;
     //
     private List<WarnAction> warnActions = List.of(
         new WarnAction(WarnAction.Type.KICK, 3)/*,
@@ -399,6 +401,17 @@ public class GuildSetting {
     @JsonProperty("warnLogging")
     public GuildSetting setWarnLogging(boolean warnLogging) {
         this.warnLogging = warnLogging;
+        return this;
+    }
+
+    @JsonProperty("memberLogging")
+    public boolean isMemberLogging() {
+        return this.memberLogging;
+    }
+
+    @JsonProperty("memberLogging")
+    public GuildSetting setMemberLogging(boolean memberLogging) {
+        this.memberLogging = memberLogging;
         return this;
     }
 

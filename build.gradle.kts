@@ -28,8 +28,6 @@ plugins {
     java
     `java-library`
     `maven-publish`
-
-    id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 
 group = "com.dunctebot"
@@ -119,16 +117,6 @@ publishing {
             artifact(sourcesJar)
         }
     }
-}
-
-githubRelease {
-    token(System.getenv("GITHUB_TOKEN"))
-    owner("DuncteBot")
-    repo("models")
-    tagName(project.version as String)
-    overwrite(false)
-    prerelease(false)
-    body(changelog())
 }
 
 build.apply {
