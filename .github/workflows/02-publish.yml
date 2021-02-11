@@ -29,4 +29,4 @@ jobs:
         env:
             JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
             JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
-        run: ./gradlew --no-daemon publish
+        run: ./gradlew --no-daemon githubRelease publish
