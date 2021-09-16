@@ -79,6 +79,8 @@ public class GuildSetting {
     private boolean warnLogging = true;
     // new feature: disable by default
     private boolean memberLogging = false;
+    private boolean inviteLoggingEnabled = false;
+    private boolean messageLoggingEnabled = false;
     //
     private List<WarnAction> warnActions = List.of(
         new WarnAction(WarnAction.Type.KICK, 3)/*,
@@ -91,8 +93,6 @@ public class GuildSetting {
 
     private int youngAccountThreshold = -1;
     private boolean youngAccountBanEnabled = false;
-    private boolean inviteLoggingEnabled = false;
-    private boolean messageLoggingEnabled = false;
 
     @JsonCreator
     public GuildSetting(@JsonProperty("guildId") long guildId) {
@@ -348,6 +348,7 @@ public class GuildSetting {
         return this;
     }
 
+    /// <editor-fold desc="logging settings" defaultstate="collapsed">
     @JsonProperty("banLogging")
     public boolean isBanLogging() {
         return this.banLogging;
@@ -413,6 +414,30 @@ public class GuildSetting {
         this.memberLogging = memberLogging;
         return this;
     }
+
+    @JsonProperty("invite_logging")
+    public boolean isInviteLogging() {
+        return this.inviteLoggingEnabled;
+    }
+
+    @JsonProperty("invite_logging")
+    public GuildSetting setInviteLogging(boolean enabled) {
+        this.inviteLoggingEnabled = enabled;
+
+        return this;
+    }
+
+    @JsonProperty("message_logging")
+    public boolean isMessageLogging() {
+        return this.messageLoggingEnabled;
+    }
+
+    @JsonProperty("message_logging")
+    public GuildSetting setMessageLogging(boolean enabled) {
+        this.messageLoggingEnabled = enabled;
+        return this;
+    }
+    /// </editor-fold>
 
     @JsonProperty("filterType")
     public ProfanityFilterType getFilterType() {
@@ -495,29 +520,6 @@ public class GuildSetting {
     @JsonProperty("young_account_ban_enabled")
     public GuildSetting setYoungAccountBanEnabled(boolean enabled) {
         this.youngAccountBanEnabled = enabled;
-        return this;
-    }
-
-    @JsonProperty("invite_logging")
-    public boolean isInviteLogging() {
-        return this.inviteLoggingEnabled;
-    }
-
-    @JsonProperty("invite_logging")
-    public GuildSetting setInviteLogging(boolean enabled) {
-        this.inviteLoggingEnabled = enabled;
-
-        return this;
-    }
-
-    @JsonProperty("message_logging")
-    public boolean isMessageLogging() {
-        return this.messageLoggingEnabled;
-    }
-
-    @JsonProperty("message_logging")
-    public GuildSetting setMessageLogging(boolean enabled) {
-        this.messageLoggingEnabled = enabled;
         return this;
     }
 
