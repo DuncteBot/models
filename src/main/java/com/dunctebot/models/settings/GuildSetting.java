@@ -45,14 +45,13 @@ import static com.dunctebot.models.utils.Utils.ratelimmitChecks;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GuildSetting {
     public static String DEFAULT_PREFIX = "db!";
-    public static final String[] LOGGING_TYPES = {"Invite", "Member", "Ban", "Unban", "Mute", "Kick", "Warn"};
+    public static final String[] LOGGING_TYPES = {"Invite", "Member", "Message", "Ban", "Unban", "Mute", "Kick", "Warn"};
 
     private final long guildId;
     private List<String> blacklistedWords = new ArrayList<>();
     private String prefix = DEFAULT_PREFIX;
     private long autoRole = 0L;
     private boolean enableJoinMessage = false;
-    // TODO
     private boolean enableLeaveMessage = false;
     private boolean enableSwearFilter = false;
     private boolean autoDeHoist = false;
@@ -512,12 +511,12 @@ public class GuildSetting {
     }
 
     @JsonProperty("message_logging")
-    public boolean isMessageLoggingEnabled() {
+    public boolean isMessageLogging() {
         return this.messageLoggingEnabled;
     }
 
     @JsonProperty("message_logging")
-    public GuildSetting setMessageLoggingEnabled(boolean enabled) {
+    public GuildSetting setMessageLogging(boolean enabled) {
         this.messageLoggingEnabled = enabled;
         return this;
     }
